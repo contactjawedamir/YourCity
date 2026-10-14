@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fa-AF" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=covered">
+<meta name="theme-color" content="#F5F2EA">
+<title>شهر شما — Your City</title>
+<style>
+html,body{margin:0;padding:0;background:#E8E4DA;font-family:-apple-system,'Segoe UI',Tahoma,sans-serif}
+#yc-root{display:flex;justify-content:center;padding:8px 0}
+#yc-root button,#yc-root input{font:inherit}
+.yc-phone{width:min(392px,100%);border:1px solid #ccc;border-radius:16px;overflow:hidden;background:#F5F2EA;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.12)}
+.yc-screen{flex:1;min-height:600px;max-height:640px;overflow-y:auto;overscroll-behavior:contain;background:#F5F2EA;color:#1D2B2A;scrollbar-width:none}
+.yc-screen::-webkit-scrollbar{display:none}
+.yc-status{display:flex;justify-content:space-between;align-items:center;padding:8px 16px 4px;font-size:12px}
+.yc-status .yc-net{display:flex;align-items:center;gap:4px;color:#167D73}
+.yc-hd{padding:4px 16px 12px}
+.yc-title{font-size:22px;font-weight:600;line-height:1.2;display:flex;align-items:center;gap:8px}
+.yc-sunline{width:44px;height:3px;background:#E6A84A;border-radius:2px;margin-top:6px}
+.yc-lang{display:flex;background:rgba(29,43,42,.06);border-radius:8px;padding:2px;margin-top:8px;width:max-content}
+.yc-lang button{border:0;background:transparent;padding:4px 12px;border-radius:6px;font-size:13px;cursor:pointer;color:inherit}
+.yc-lang button.on{background:#1D2B2A;color:#F5F2EA}
+.yc-card{background:#fff;border:1px solid rgba(29,43,42,.08);border-radius:12px;padding:12px;margin:0 12px 12px}
+.yc-row{display:flex;align-items:center;gap:8px}
+.yc-grow{flex:1;min-width:0}
+.yc-muted{font-size:12px;color:rgba(29,43,42,.55)}
+.yc-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;white-space:nowrap}
+.yc-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;background:#E6A84A;color:#1D2B2A}
+.yc-btn.ghost{background:transparent;border:1px solid rgba(29,43,42,.2);color:inherit}
+.yc-btn.dark{background:#1D2B2A;color:#F5F2EA}
+.yc-btn:disabled{opacity:.4}
+.yc-iconbtn{width:36px;height:36px;border-radius:8px;border:1px solid rgba(29,43,42,.15);background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;color:inherit}
+.yc-iconbtn.saff{background:#E6A84A;border-color:#E6A84A;color:#1D2B2A}
+.yc-prog{height:8px;border-radius:4px;background:rgba(29,43,42,.1);overflow:hidden}
+.yc-prog>i{display:block;height:100%;background:#167D73;border-radius:4px;transition:width .4s ease-out}
+.yc-loop{display:flex;align-items:stretch}
+.yc-step{flex:1;text-align:center}
+.yc-orb{width:44px;height:44px;border-radius:12px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;background:rgba(230,168,74,.15);border:1px solid rgba(230,168,74,.4)}
+.yc-orb.tealb{background:rgba(22,125,115,.12);border-color:rgba(22,125,115,.4)}
+.yc-lab{font-size:11px;line-height:1.3}
+.yc-conn{width:22px;align-self:flex-start;margin-top:16px;color:rgba(29,43,42,.3);flex:none}
+.yc-rep{display:flex;gap:10px;align-items:flex-start}
+.yc-catic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
+.yc-stamp{font-size:11px;color:rgba(29,43,42,.55);display:flex;align-items:center;gap:4px;margin-top:3px}
+.yc-confirm{display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(29,43,42,.15);background:#fff;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;flex:none;color:inherit}
+.yc-confirm.did{background:rgba(22,125,115,.12);border-color:rgba(22,125,115,.5);color:#167D73}
+.yc-dots{display:flex}
+.yc-dots i{width:16px;height:16px;border-radius:50%;border:2px solid #fff;background:#c9c2b2;margin-left:-5px}
+.yc-dots i.t{background:#167D73}
+.yc-tabbar{display:flex;border-top:1px solid rgba(29,43,42,.1);background:#fff;padding:6px 8px;position:relative;align-items:flex-end}
+.yc-tab{flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:rgba(29,43,42,.5);cursor:pointer;padding:4px 0;border-radius:8px}
+.yc-tab.on{color:#1D2B2A;font-weight:600}
+.yc-tab.on .yc-tic{color:#E6A84A}
+.yc-fab{width:52px;height:52px;border-radius:16px;border:0;background:#E6A84A;color:#1D2B2A;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:-26px 8px 0;box-shadow:0 4px 12px rgba(230,168,74,.5);flex:none}
+.yc-mapwrap{margin:0 12px 12px;border-radius:12px;overflow:hidden;border:1px solid rgba(29,43,42,.12);background:#EFE9DC}
+.yc-mapwrap svg{display:block;width:100%;cursor:crosshair}
+.yc-fchips{display:flex;gap:6px;padding:0 12px 10px;flex-wrap:wrap}
+.yc-fchip{border:1px solid rgba(29,43,42,.15);background:#fff;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:inherit}
+.yc-fchip.on{background:#1D2B2A;color:#F5F2EA;border-color:#1D2B2A}
+.yc-sheet{background:#fff;border:1px solid rgba(29,43,42,.1);border-radius:12px;padding:12px;margin:0 12px 12px;animation:ycup .25s ease-out}
+@keyframes ycup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ycpulse{0%,100%{opacity:1}50%{opacity:.3}}
+.yc-pulse{animation:ycpulse 1.6s infinite}
+.yc-steps{display:flex;gap:6px;padding:0 12px 12px}
+.yc-pip{flex:1;height:4px;border-radius:2px;background:rgba(29,43,42,.12)}
+.yc-pip.on{background:#E6A84A}
+.yc-catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 12px}
+.yc-cattile{background:#fff;border:1.5px solid rgba(29,43,42,.1);border-radius:12px;padding:14px 4px 10px;text-align:center;cursor:pointer}
+.yc-cattile.on{border-color:#E6A84A;background:rgba(230,168,74,.1)}
+.yc-ci{width:52px;height:52px;border-radius:12px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
+.yc-cl{font-size:12px;font-weight:600}
+.yc-attach{display:flex;gap:8px;margin:0 12px 12px}
+.yc-att{flex:1;border:1.5px dashed rgba(29,43,42,.25);border-radius:12px;background:#fff;padding:12px 4px;text-align:center;cursor:pointer;font-size:12px}
+.yc-att.done{border-style:solid;border-color:#167D73;background:rgba(22,125,115,.08)}
+.yc-tl{display:flex;gap:10px;margin-bottom:12px}
+.yc-torb{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;background:rgba(29,43,42,.06)}
+.yc-torb.ok{background:rgba(22,125,115,.12);color:#167D73}
+.yc-torb.warn{background:rgba(200,93,77,.12);color:#C85D4D}
+.yc-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 12px}
+.yc-metric{background:#fff;border:1px solid rgba(29,43,42,.08);border-radius:12px;padding:10px 4px;text-align:center}
+.yc-metric b{font-size:22px;font-weight:600;display:block;font-variant-numeric:tabular-nums}
+.yc-toast{position:sticky;bottom:8px;margin:0 12px 8px;background:#1D2B2A;color:#F5F2EA;border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;opacity:0;transition:opacity .3s;pointer-events:none}
+.yc-toast.show{opacity:1}
+.yc-bar{height:6px;border-radius:3px;background:rgba(29,43,42,.08);overflow:hidden;margin-top:6px}
+.yc-bar>i{display:block;height:100%;border-radius:3px}
+.yc-navbtn{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;font-size:13px;cursor:pointer;color:inherit;padding:4px}
+</style>
+</head>
+<body>
+<div id="yc-root">
+ <div class="yc-phone">
+  <div class="yc-screen" id="yc-screen" dir="rtl"></div>
+  <nav class="yc-tabbar" id="yc-tabbar"></nav>
+ </div>
+</div>
+<script>
+var I = {
+home:'<path d="M4.5 11.2 12 4.5l7.5 6.7v8.3a1.2 1.2 0 0 1-1.2 1.2h-4.1v-5.8h-4.4v5.8H5.7a1.2 1.2 0 0 1-1.2-1.2z"/>',
+pin:'<path d="M12 21.2s-6.8-5.3-6.8-10.6a6.8 6.8 0 0 1 13.6 0c0 5.3-6.8 10.6-6.8 10.6z"/><circle cx="12" cy="10.4" r="2.5"/>',
+plus:'<path d="M12 5.2v13.6M5.2 12h13.6"/>',
+hist:'<circle cx="12" cy="12" r="8.4"/><path d="M12 7.6V12l3.2 2"/>',
+user:'<circle cx="12" cy="8" r="3.6"/><path d="M5.2 20c1.2-3.3 3.8-4.9 6.8-4.9s5.6 1.6 6.8 4.9)"/>',
+light:'<path d="M7 21V5"/><path d="M7 6.2h7a3 3 0 0 1 3 3v.8"/><path d="M14.6 10h4.8l-2.4 4z"/><path d="M19.6 16.4v2M17 17.6l1.4 1.4M22.2 17.6l-1.4 1.4"/>',
+road:'<path d="M7.4 21 10 3.2M16.6 21 14 3.2"/><path d="M12 5.4v2.4M12 10.6v2.4M12 15.8v2.4"/>',
+trash:'<path d="M5 7h14M9.8 7V5.2h4.4V7M8.2 7l.9 13h5.8l.9-13"/><path d="M10.4 11v5.2M13.6 11v5.2"/>',
+cam:'<rect x="3.4" y="8" width="17.2" height="12" rx="2"/><path d="M8.4 8l1.5-3h4.2l1.5 3"/><circle cx="12" cy="13.6" r="3.2"/>',
+mic:'<rect x="9" y="3.4" width="6" height="10.2" rx="3"/><path d="M6 11.2a6 6 0 0 0 12 0M12 17.2v3.4"/>',
+gps:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2.4v2.6M12 19v2.6M2.4 12h2.6M19 12h2.6"/>',
+check:'<path d="M5 12.6l4.4 4.4L19 7.4"/>',
+star:'<path d="M12 3.4l2.6 5.4 5.8.7-4.3 4 1.1 5.7-5.2-2.8-5.2 2.8 1.1-5.7-4.3-4 5.8-.7z"/>',
+warn:'<path d="M12 4.2 2.8 20h18.4z"/><path d="M12 10v4.2M12 17v.2"/>',
+sync:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 3.8v4.4h-4.4"/>',
+chart:'<path d="M5.4 20v-6M10.8 20V5.6M16.2 20v-8.8M20.6 20H3.4"/>',
+send:'<path d="M20.8 3.4 10 13.8M20.8 3.4l-6.9 17.4-3.9-7.5-7.5-3.9z"/>',
+info:'<circle cx="12" cy="12" r="8.4"/><path d="M12 11v5.2M12 7.7v.2"/>',
+back:'<path d="M9.6 5.8 16.8 12l-7.2 6.2"/>',
+globe:'<circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8M12 3.6c2.4 2.3 2.4 14.5 0 16.8M12 3.6c-2.4 2.3-2.4 14.5 0 16.8"/>',
+bell:'<path d="M6.2 9.4a5.8 5.8 0 0 1 11.6 0c0 4.8 1.9 5.8 1.9 5.8H4.3s1.9-1 1.9-5.8"/><path d="M10 18.6a2.1 2.1 0 0 0 4 0"/>',
+off:'<path d="M12 3.4v9"/><path d="M6.6 6.9a8 8 0 1 0 10.8 0"/>',
+close:'<path d="M6 6l12 12M18 6 6 18"/>',
+arrd:'<path d="M6 9.2l6 6 6-6"/>',
+fwd:'<path d="M14.4 5.8 7.2 12l7.2 6.2"/>'
+};
+I.user = '<circle cx="12" cy="8" r="3.6"/><path d="M5.2 20c1.2-3.3 3.8-4.9 6.8-4.9s5.6 1.6 6.8 4.9)"/>'.split(')')[0]+'"/>';
+function ic(n,s){return '<svg width="'+(s||20)+'" height="'+(s||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+I[n]+'</svg>';}
+
+var T = {
+dari:{home:'خانه',map:'نقشه',report:'گزارش',act:'فعالیت',prof:'پروفایل',
+ title:'شهر شما',sub:'ناحیه ۱۲، کابل',
+ solved:'گزارش حل شده',of:'از',
+ loop1:'گزارش کنید',loop2:'۳ همسایه تائید',loop3:'شاروالی حل می‌کند',
+ spot:'اولویت این هفته',recent:'گزارش‌های اخیر',votes:'رأی',
+ confirm:'تائید می‌کنم',confirmed:'تائید شد',verified:'تائید شده',
+ new:'تازه',progress:'در حال کار',resolved:'حل شد',
+ viewall:'دیدن در نقشه',tapmap:'برای گزارش، روی نقشه ضربه بزنید',
+ filterAll:'همه',prio:'اولویت‌های همسایه‌ها',
+ step1:'مشکل چیست؟',step2:'کجاست؟',step3:'ببینید و بفرستید',
+ catLight:'برق سرک',catRoad:'سرک و آب',catWaste:'زباله',
+ where:'آدرس',auto:'به صورت خودکار ثبت شد',gps:'موقعیت من',
+ photo:'عکس',voice:'صدا',rec:'ضبط کردن…',voicedone:'صوت ضبط شد',
+ review:'خلاصه گزارش',send:'ارسال گزارش',next:'بعدی',prev:'قبلی',
+ queue:'در صف — به زودی ارسال می‌شود',synced:'ارسال شد',
+ thanks:'گزارش شما ثبت شد',thanksSub:'همسایه‌ها آن را می‌بینند و تائید می‌کنند.',
+ again:'گزارش جدید',done:'تأیید',
+ myrep:'گزارش‌های من',timeline:'پیشرفت کار',
+ help:'کمک',notif:'اطلاع رسانی',offline:'بدون انترنت',muni:'داشبورد شاروالی',
+ language:'زبان',
+ muniTitle:'شاروالی — ناحیه ۱۲',queue2:'صف رسیدگی',accept:'قبول و شروع',solve:'حل شد',
+ mTotal:'کل گزارش',mVer:'تائید شده',mRes:'حل شده',
+ empty:'هنوز گزارشی نفرستاده‌اید',start:'اولین گزارش را بفرستید',
+ sec:'ثانیه پیش',min:'دقیقه پیش',hr:'ساعت پیش',d:'روز پیش',
+ blockNear:'نزدیک',nahia:'ناحیه ۱۲، کابل',
+ offlineOn:'بدون انترنت هم کار می‌کند',helpT:'چرا ۳ همسایه؟',
+ helpB:'وقتی سه همسایه یک گزارش را تائید کنند، شاروالی آن را در اولویت می‌گیرد. صوت برای کسانی است که تایپ کردن برایشان دشوار است.',
+ neighbors:'همسایه‌ها تائید کردند',votesub:'به اولویت رأی بدهید',votedone:'رأی شما ثبت شد',
+ closeMap:'بستن',reportHere:'گزارش در اینجا',confirmNote:'هر تائید شما به شاروالی نشان می‌دهد که مشکل واقعی است.'},
+pshto:{home:'کور',map:'نقشه',report:'راپور',act:'فعالیت',prof:'پروفایل',
+ title:'ستاسو ښار',sub:'ګڼه ۱۲، کابل',
+ solved:'حل شوي راپورونه',of:'له',
+ loop1:'راپور ورکړئ',loop2:'۳ ګاونډي تایید',loop3:'ښاروالي حل کوي',
+ spot:'د دې اونۍ لومړیتوب',recent:'وروستي راپورونه',votes:'رايې',
+ confirm:'تایید کوم',confirmed:'تایید شو',verified:'تایید شوی',
+ new:'نوي',progress:'کار روان دی',resolved:'حل شو',
+ viewall:'په نقشه کې وګورئ',tapmap:'د راپور لپاره په نقشه کې ټک وکړئ',
+ filterAll:'ټول',prio:'د ګاونډیو لومړیتوبونه',
+ step1:'ستونزه څه ده؟',step2:'چیرته ده؟',step3:'وګورئ او ولېږئ',
+ catLight:'د سړک برق',catRoad:'سړک او اوبه',catWaste:'کثافات',
+ where:'پته',auto:'پخپله ثبت شوه',gps:'زما ځای',
+ photo:'انځور',voice:'غږ',rec:'ثبت روان دی…',voicedone:'غږ ثبت شو',
+ review:'د راپور لنډیز',send:'راپور ولېږئ',next:'بل',prev:'شاته',
+ queue:'په لیکه کې — ژر به ولېږل شي',synced:'لېږل شو',
+ thanks:'ستاسو راپور ثبت شو',thanksSub:'ګاونډي به یې وګوري او تایید به یې کړي.',
+ again:'نوی راپور',done:'تایید',
+ myrep:'زما راپورونه',timeline:'د کار مخته تګ',
+ help:'مرسته',notif:'خبرتیاوې',offline:'بغیر انټرنټ',muni:'د ښاروالۍ ډشبورډ',
+ language:'ژبه',
+ muniTitle:'ښاروالي — ګڼه ۱۲',queue2:'د رسیدښت لیکه',accept:'منل او پیل',solve:'حل شو',
+ mTotal:'ټول راپور',mVer:'تایید شوی',mRes:'حل شوی',
+ empty:'تر اوسه راپور نه دی لېږل شوی',start:'لومړی راپور ولېږئ',
+ sec:'ثانیې وړاندې',min:'دقیقې وړاندې',hr:'ګړې وړاندې',d:'ورځې وړاندې',
+ blockNear:'څنګ ته',nahia:'ګڼه ۱۲، کابل',
+ offlineOn:'بغیر انټرنټ هم کار کوي',helpT:'ولې ۳ ګاونډي؟',
+ helpB:'کله چې درې ګاونډي یو راپور تایید کړي، ښاروالي هغه په لومړیتوب کې اخلي. غږ د هغو کسانو لپاره دی چې ټایپ کول ورته ګران دي.',
+ neighbors:'ګاونډیو تایید کړ',votesub:'لومړیتوب ته رايې ورکړئ',votedone:'ستاسو رايي ثبت شوه',
+ closeMap:'بندول',reportHere:'دلته راپور ورکړئ',confirmNote:'ستاسو هر تایيد ښاروالي ته ښيي چې ستونزه رښتینې ده.'}
+};
+var CAT = {
+light:{dk:'catLight',icon:'light',col:'#B9811F',bg:'rgba(230,168,74,.16)'},
+road:{dk:'catRoad',icon:'road',col:'#C85D4D',bg:'rgba(200,93,77,.14)'},
+waste:{dk:'catWaste',icon:'trash',col:'#167D73',bg:'rgba(22,125,115,.13)'}
+};
+var ST = {
+new:['new','#B9811F','rgba(230,168,74,.16)'],
+verified:['verified','#167D73','rgba(22,125,115,.13)'],
+progress:['progress','#C85D4D','rgba(200,93,77,.13)'],
+resolved:['resolved','#167D73','rgba(22,125,115,.13)']
+};
+var STREETS=[
+ {n:'سرک ۱',pts:[[0,84],[130,84],[210,104],[360,104]]},
+ {n:'کوچه آب',pts:[[0,158],[360,148]],canal:true},
+ {n:'سرک ۲',pts:[[0,232],[140,232],[360,210]]},
+ {n:'سرک ۳',pts:[[0,342],[360,342]]},
+ {n:'سرک ۴',pts:[[78,0],[78,420]]},
+ {n:'سرک ۵',pts:[[252,0],[252,420]]}
+];
+function distSeg(px,py,ax,ay,bx,by){var dx=bx-ax,dy=by-ay,l2=dx*dx+dy*dy;var tt=l2?((px-ax)*dx+(py-ay)*dy)/l2:0;tt=Math.max(0,Math.min(1,tt));return Math.sqrt((px-ax-tt*dx)*(px-ax-tt*dx)+(py-ay-tt*dy)*(py-ay-tt*dy));}
+function geo(x,y){var best=STREETS[0],bd=1e9;
+ for(var si=0;si<STREETS.length;si++){var s=STREETS[si];
+  for(var i=0;i<s.pts.length-1;i++){var d=distSeg(x,y,s.pts[i][0],s.pts[i][1],s.pts[i+1][0],s.pts[i+1][1]);
+   if(d<bd){bd=d;best=s;}}}
+ return t('blockNear')+' '+best.n+' · '+t('nahia');}
+var S={lang:'dari',tab:'home',muni:false,filter:'all',sel:null,newPin:null,help:false,notif:true,offline:true,
+ rep:{step:1,cat:null,loc:null,photo:false,voice:0,done:false},
+ confirmed:{},voted:{},mine:[],
+ reports:[
+  {id:1,cat:'road',t_d:'سوراخ بزرگ در سرک',t_p:'لوی ګاله په سړک کې',x:190,y:320,conf:18,status:'verified',age:26,u:'hr'},
+  {id:2,cat:'light',t_d:'چراغ سرک خراب است',t_p:'د سړک څراغ خراب دی',x:96,y:120,conf:12,status:'progress',age:2,u:'d'},
+  {id:3,cat:'waste',t_d:'زباله انباشته شده',t_p:'را ټول شوي کثافات',x:300,y:176,conf:9,status:'new',age:40,u:'min'},
+  {id:4,cat:'road',t_d:'آب جمع در سرک',t_p:'په سړک کې راټولې اوبه',x:262,y:270,conf:15,status:'progress',age:5,u:'hr'},
+  {id:5,cat:'light',t_d:'چراغ خاموش در کوچه',t_p:'کوڅه کې تور څراغ',x:150,y:60,conf:4,status:'new',age:12,u:'hr'},
+  {id:6,cat:'road',t_d:'کانال آب بند شده',t_p:'بند شوی د اوبو کانال',x:60,y:170,conf:21,status:'resolved',age:3,u:'d'}
+ ]};
+function t(k){return T[S.lang][k];}
+function tt(r){return S.lang==='dari'?r.t_d:r.t_p;}
+function ago(r){return r.age+' '+t(r.u);}
+function stChip(st){var s=ST[st];return '<span class="yc-chip" style="color:'+s[1]+';background:'+s[2]+'">'+t(s[0])+'</span>';}
+function catIcon(c,s){var k=CAT[c];return '<span class="yc-catic" style="background:'+k.bg+';color:'+k.col+'">'+ic(k.icon,s||22)+'</span>';}
+function ring(pct,col){var r=8,c=2*Math.PI*r;
+ return '<svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="'+r+'" fill="none" stroke="rgba(29,43,42,.1)" stroke-width="3"/><circle cx="13" cy="13" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+(c*(1-pct)).toFixed(1)+'" transform="rotate(-90 13 13)"/></svg>';}
+
+function pinsSVG(){
+ return S.reports.filter(function(r){return S.filter==='all'||r.cat===S.filter;}).map(function(r){
+  var k=CAT[r.cat],sel=S.sel===r.id;
+  var g='<g transform="translate('+r.x+','+r.y+')" style="cursor:pointer" onclick="event.stopPropagation();openPin('+r.id+')">';
+  if(sel)g+='<circle r="16" fill="'+k.col+'" opacity=".18"/>';
+  g+='<circle r="11" fill="'+k.col+'" stroke="#fff" stroke-width="2"/>';
+  g+='<g transform="translate(-7,-7) scale(0.583)" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round">'+I[k.icon]+'</g>';
+  if(r.status==='resolved')g+='<circle cx="8" cy="-8" r="6.5" fill="#167D73" stroke="#fff" stroke-width="1.6"/><path d="M5.2 -8.4l1.8 1.8 3-3.2" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  return g+'</g>';}).join('');}
+function mapSVG(h,mode){
+ var blocks=[[10,14,60,60],[90,14,150,60],[262,14,88,80],[10,96,58,52],[90,116,150,40,'p'],[262,116,88,26],[10,168,58,56],[90,168,150,56],[262,182,88,90,'p'],[10,242,58,90],[90,242,150,90],[262,282,88,50],[10,352,58,58],[90,352,150,58],[262,352,88,58]];
+ var b=blocks.map(function(x){return '<rect x="'+x[0]+'" y="'+x[1]+'" width="'+x[2]+'" height="'+x[3]+'" rx="6" fill="'+(x[4]==='p'?'rgba(22,125,115,.12)':'rgba(255,255,255,.65)')+'" stroke="rgba(29,43,42,.07)"/>';}).join('');
+ b+='<circle cx="120" cy="136" r="7" fill="rgba(22,125,115,.35)"/><circle cx="300" cy="220" r="9" fill="rgba(22,125,115,.3)"/><circle cx="310" cy="130" r="6" fill="rgba(22,125,115,.35)"/>';
+ var st=STREETS.map(function(s){return '<polyline points="'+s.pts.map(function(p){return p.join(',');}).join(' ')+'" fill="none" stroke="'+(s.canal?'rgba(22,125,115,.5)':'#DAD2BF')+'" stroke-width="'+(s.canal?7:11)+'" stroke-linecap="round"/>';}).join('');
+ st+=STREETS.map(function(s){var p=s.pts[0];return '<text x="'+(p[0]+6)+'" y="'+(p[1]-6)+'" font-size="9" fill="rgba(29,43,42,.45)">'+s.n+'</text>';}).join('');
+ var extra='';
+ if(mode==='full')extra+=pinsSVG();
+ if(S.newPin&&mode==='full')extra+='<g transform="translate('+S.newPin.x+','+S.newPin.y+')"><circle r="15" fill="none" stroke="#E6A84A" stroke-width="2" class="yc-pulse"/><path d="M0 6.5 C -7 -1.5 -5 -11.5 0 -11.5 C 5 -11.5 7 -1.5 0 6.5z" fill="#E6A84A" stroke="#1D2B2A" stroke-width="1.4"/><circle cy="-5.5" r="2.3" fill="#1D2B2A"/></g>';
+ if(mode==='pick'&&S.rep.loc)extra+='<g transform="translate('+S.rep.loc.x+','+S.rep.loc.y+')"><circle r="14" fill="none" stroke="#E6A84A" stroke-width="2"/><path d="M0 6.5 C -7 -1.5 -5 -11.5 0 -11.5 C 5 -11.5 7 -1.5 0 6.5z" fill="#E6A84A" stroke="#1D2B2A" stroke-width="1.4"/><circle cy="-5.5" r="2.3" fill="#1D2B2A"/></g>';
+ return '<svg viewBox="0 0 360 420" style="height:'+h+'px" onclick="mapTap(event,'+(mode==='pick'?1:0)+')">'+b+st+extra+'</svg>';}
+function mapTap(e,pick){
+ var svg=e.currentTarget;var r=svg.getBoundingClientRect();
+ var x=(e.clientX-r.left)*360/r.width,y=(e.clientY-r.top)*420/r.height;
+ if(pick){S.rep.loc={x:x,y:y,addr:geo(x,y)};}
+ else{S.newPin={x:x,y:y,addr:geo(x,y)};S.sel=null;}
+ render();}
+function openPin(id){S.sel=(S.sel===id)?null:id;S.newPin=null;render();}
+function startReportHere(){S.rep={step:2,cat:null,loc:S.newPin,photo:false,voice:0,done:false};S.newPin=null;S.tab='report';render();}
+
+function statusBar(sub){return '<div class="yc-status"><span>۱۴:۳۷</span><span class="yc-net">'+ic('off',13)+' '+(sub||t('offlineOn'))+'</span></div>';}
+function langPills(){return '<div class="yc-lang"><button class="'+(S.lang==='dari'?'on':'')+'" onclick="setLang(\'dari\')">دری</button><button class="'+(S.lang==='pshto'?'on':'')+'" onclick="setLang(\'pshto\')">پښتو</button></div>';}
+function reportRow(r,actions){
+ var did=S.confirmed[r.id];
+ var dots='';for(var i=0;i<4;i++)dots+='<i class="'+(r.conf>=(i+1)*3?'t':'')+'"></i>';
+ return '<div class="yc-card"><div class="yc-rep">'+catIcon(r.cat)
+ +'<div class="yc-grow"><div class="yc-row"><b style="font-size:14px" class="yc-grow">'+tt(r)+'</b>'+stChip(r.status)+'</div>'
+ +'<div class="yc-stamp">'+ic('pin',12)+' '+geo(r.x,r.y).split('·')[0]+' · '+ago(r)+'</div>'
+ +'<div class="yc-row" style="margin-top:8px"><div class="yc-dots">'+dots+'</div><span class="yc-muted">'+r.conf+' '+t('neighbors')+'</span><span class="yc-grow"></span>'
+ +((actions!==false&&r.status!=='resolved')?('<button class="yc-confirm '+(did?'did':'')+'" onclick="confirmRep('+r.id+')">'+ic(did?'check':'user',14)+(did?t('confirmed'):t('confirm'))+'</button>'):'')
+ +'</div></div></div></div>';}
+function toast(msg){var el=document.getElementById('yc-toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(el._h);el._h=setTimeout(function(){el.classList.remove('show');},2200);}
+
+/* ---------- views ---------- */
+function vHome(){
+ var total=S.reports.length,res=S.reports.filter(function(r){return r.status==='resolved';}).length;
+ var spot=S.reports.filter(function(r){return r.status!=='resolved';}).sort(function(a,b){return b.conf-a.conf;})[0];
+ return statusBar()
+ +'<div class="yc-hd"><div class="yc-title">'+t('title')+'<span class="yc-grow"></span><button class="yc-iconbtn" onclick="S.help=true;render()">'+ic('info',18)+'</button></div>'
+ +'<div class="yc-muted">'+t('sub')+'</div><div class="yc-sunline"></div>'+langPills()+'</div>'
+ +'<div class="yc-card"><div class="yc-row" style="margin-bottom:8px"><b class="yc-grow" style="font-size:14px">'+t('solved')+'</b><span class="yc-muted">'+res+' '+t('of')+' '+total+'</span></div>'
+ +'<div class="yc-prog"><i style="width:'+Math.round(res/total*100)+'%"></i></div></div>'
+ +'<div class="yc-card"><div class="yc-loop">'
+ +'<div class="yc-step"><div class="yc-orb">'+ic('cam',22)+'</div><div class="yc-lab">'+t('loop1')+'</div></div><div class="yc-conn">'+ic('fwd',14)+'</div>'
+ +'<div class="yc-step"><div class="yc-orb">'+ic('user',22)+'</div><div class="yc-lab">'+t('loop2')+'</div></div><div class="yc-conn">'+ic('fwd',14)+'</div>'
+ +'<div class="yc-step"><div class="yc-orb tealb">'+ic('check',22)+'</div><div class="yc-lab">'+t('loop3')+'</div></div>'
+ +'</div></div>'
+ +'<div style="padding:0 16px 6px;font-size:13px;font-weight:600">'+t('spot')+'</div>'
+ +'<div class="yc-card" style="border-color:rgba(230,168,74,.5);background:rgba(230,168,74,.07)"><div class="yc-rep">'+catIcon(spot.cat)
+ +'<div class="yc-grow"><div class="yc-row"><b class="yc-grow" style="font-size:15px">'+tt(spot)+'</b>'+ring(Math.min(1,spot.conf/20),'#E6A84A')+'</div>'
+ +'<div class="yc-stamp">'+ic('pin',12)+' '+geo(spot.x,spot.y).split('·')[0]+'</div>'
+ +'<div class="yc-row" style="margin-top:8px"><span class="yc-chip" style="color:#B9811F;background:rgba(230,168,74,.16)">'+ic('star',12)+' '+spot.conf+' '+t('votes')+'</span><span class="yc-grow"></span>'
+ +'<button class="yc-confirm '+(S.voted[spot.id]?'did':'')+'" onclick="vote('+spot.id+')">'+ic('star',14)+(S.voted[spot.id]?t('confirmed'):t('votesub'))+'</button></div>'
+ +'</div></div></div>'
+ +'<div class="yc-row" style="padding:0 16px 6px"><b class="yc-grow" style="font-size:13px">'+t('recent')+'</b><button class="yc-fchip" onclick="setTab(\'map\')">'+t('viewall')+'</button></div>'
+ +S.reports.slice(0,3).map(function(r){return reportRow(r);}).join('')
+ +'<div class="yc-toast" id="yc-toast"></div>';}
+
+function pinSheet(id){
+ var r=S.reports.find(function(x){return x.id===id;});if(!r)return '';
+ var did=S.confirmed[r.id];
+ return '<div class="yc-sheet"><div class="yc-row">'+catIcon(r.cat)
+ +'<div class="yc-grow"><b style="font-size:14px">'+tt(r)+'</b><div class="yc-stamp">'+ic('pin',12)+' '+geo(r.x,r.y)+' · '+ago(r)+'</div></div>'+stChip(r.status)+'</div>'
+ +'<div class="yc-row" style="margin-top:10px"><div class="yc-prog yc-grow" style="height:6px"><i style="width:'+Math.min(100,r.conf/20*100)+'%"></i></div><span class="yc-muted">'+r.conf+'/۲۰</span></div>'
+ +'<div class="yc-row" style="margin-top:10px">'
+ +(r.status==='resolved'?'<span class="yc-chip" style="color:#167D73;background:rgba(22,125,115,.13)">'+ic('check',13)+' '+t('resolved')+'</span>':'<button class="yc-confirm '+(did?'did':'')+'" onclick="confirmRep('+r.id+')">'+ic(did?'check':'user',14)+(did?t('confirmed'):t('confirm'))+'</button>')
+ +'<span class="yc-grow"></span><button class="yc-fchip" onclick="S.sel=null;render()">'+t('closeMap')+'</button></div></div>';}
+
+function vMap(){
+ var chips=[['all','filterAll'],['light','catLight'],['road','catRoad'],['waste','catWaste']];
+ var list=S.reports.slice().sort(function(a,b){return b.conf-a.conf;}).slice(0,3);
+ return statusBar()
+ +'<div class="yc-hd"><div class="yc-title">'+t('map')+'</div><div class="yc-muted">'+t('tapmap')+'</div><div class="yc-sunline"></div></div>'
+ +'<div class="yc-fchips">'+chips.map(function(c){return '<button class="yc-fchip '+(S.filter===c[0]?'on':'')+'" onclick="S.filter=\''+c[0]+'\';S.sel=null;render()">'+t(c[1])+'</button>';}).join('')+'</div>'
+ +'<div class="yc-mapwrap">'+mapSVG(300,'full')+'</div>'
+ +(S.sel?pinSheet(S.sel):'')
+ +(S.newPin?'<div class="yc-sheet"><div class="yc-row" style="margin-bottom:8px"><span class="yc-iconbtn saff">'+ic('pin',18)+'</span><div class="yc-grow"><b style="font-size:14px">'+S.newPin.addr+'</b><div class="yc-muted">'+t('auto')+'</div></div></div><button class="yc-btn" style="width:100%" onclick="startReportHere()">'+ic('send',16)+' '+t('reportHere')+'</button></div>':'')
+ +'<div style="padding:0 16px 6px;font-size:13px;font-weight:600">'+t('prio')+'</div>'
+ +list.map(function(r){return '<div class="yc-card" style="margin-bottom:8px"><div class="yc-rep">'+catIcon(r.cat)+'<div class="yc-grow"><div class="yc-row"><b class="yc-grow" style="font-size:14px">'+tt(r)+'</b><span class="yc-chip" style="color:#B9811F;background:rgba(230,168,74,.16)">'+ic('star',11)+' '+r.conf+'</span></div><div class="yc-stamp">'+geo(r.x,r.y).split('·')[0]+' · '+stChip(r.status)+'</div></div></div></div>';}).join('')
+ +'<div class="yc-toast" id="yc-toast"></div>';}
+
+function mineCard(m){
+ var k=CAT[m.cat];
+ var chip=m.phase==='queue'
+  ?'<span class="yc-chip yc-pulse" style="color:#B9811F;background:rgba(230,168,74,.16)">'+ic('sync',12)+' '+t('queue')+'</span>'
+  :'<span class="yc-chip" style="color:#167D73;background:rgba(22,125,115,.13)">'+ic('check',12)+' '+t('synced')+'</span>';
+ return '<div class="yc-card"><div class="yc-rep"><span class="yc-catic" style="background:'+k.bg+';color:'+k.col+'">'+ic(k.icon,22)+'</span><div class="yc-grow"><div class="yc-row"><b class="yc-grow" style="font-size:14px">'+tt(m)+'</b>'+chip+'</div><div class="yc-stamp">'+ic('pin',12)+' '+m.addr+'</div></div></div></div>';}
+
+function vReport(){
+ if(S.rep.done){
+  return statusBar()
+  +'<div style="padding:32px 16px 8px;text-align:center"><div class="yc-orb tealb" style="width:64px;height:64px;margin:0 auto 12px">'+ic('check',30)+'</div>'
+  +'<div style="font-size:20px;font-weight:600">'+t('thanks')+'</div><div class="yc-muted" style="margin-top:4px">'+t('thanksSub')+'</div></div>'
+  +'<div style="padding:16px 16px 6px;font-size:13px;font-weight:600">'+t('myrep')+'</div>'
+  +S.mine.map(mineCard).join('')
+  +'<div class="yc-row" style="padding:4px 12px 12px"><button class="yc-btn ghost" style="flex:1" onclick="resetRep()">'+ic('plus',16)+' '+t('again')+'</button><span style="width:8px"></span><button class="yc-btn dark" style="flex:1" onclick="setTab(\'home\')">'+t('done')+'</button></div>'
+  +'<div class="yc-toast" id="yc-toast"></div>';}
+ var pips='<div class="yc-steps"><div class="yc-pip '+(S.rep.step>=1?'on':'')+'"></div><div class="yc-pip '+(S.rep.step>=2?'on':'')+'"></div><div class="yc-pip '+(S.rep.step>=3?'on':'')+'"></div></div>';
+ var body='';
+ if(S.rep.step===1){
+  body='<div style="padding:0 16px 10px;font-size:15px;font-weight:600">'+t('step1')+'</div><div class="yc-catgrid">'
+  +Object.keys(CAT).map(function(c){var k=CAT[c];
+   return '<div class="yc-cattile '+(S.rep.cat===c?'on':'')+'" onclick="pickCat(\''+c+'\')"><div class="yc-ci" style="background:'+k.bg+';color:'+k.col+'">'+ic(k.icon,28)+'</div><div class="yc-cl">'+t(k.dk)+'</div></div>';}).join('')+'</div>';
+ }else if(S.rep.step===2){
+  body='<div style="padding:0 16px 10px;font-size:15px;font-weight:600">'+t('step2')+'</div>'
+  +'<div class="yc-mapwrap">'+mapSVG(200,'pick')+'</div>'
+  +'<div class="yc-row" style="padding:0 12px 12px"><button class="yc-btn ghost" style="flex:1" onclick="gpsLoc()">'+ic('gps',16)+' '+t('gps')+'</button></div>'
+  +(S.rep.loc?'<div class="yc-card" style="border-color:rgba(230,168,74,.5)"><div class="yc-row"><span class="yc-iconbtn saff">'+ic('pin',18)+'</span><div class="yc-grow"><b style="font-size:14px">'+S.rep.loc.addr+'</b><div class="yc-muted">'+t('where')+' · '+t('auto')+'</div></div></div></div>':'')
+  +'<div class="yc-attach">'
+  +'<div class="yc-att '+(S.rep.photo?'done':'')+'" onclick="addPhoto()">'+ic('cam',24)+'<div style="margin-top:4px">'+(S.rep.photo?ic('check',12)+' '+t('photo'):t('photo'))+'</div></div>'
+  +'<div class="yc-att '+(S.rep.voice===2?'done':'')+'" onclick="addVoice()">'+(S.rep.voice===1?'<span class="yc-pulse">'+ic('mic',24)+'</span>':ic('mic',24))+'<div style="margin-top:4px">'+(S.rep.voice===2?t('voicedone'):(S.rep.voice===1?t('rec'):t('voice')))+'</div></div>'
+  +'</div>';
+ }else{
+  var k=CAT[S.rep.cat];
+  body='<div style="padding:0 16px 10px;font-size:15px;font-weight:600">'+t('step3')+'</div>'
+  +'<div class="yc-card"><div class="yc-rep"><span class="yc-catic" style="background:'+k.bg+';color:'+k.col+'">'+ic(k.icon,22)+'</span><div class="yc-grow"><b style="font-size:15px">'+t(k.dk)+'</b><div class="yc-stamp">'+ic('pin',12)+' '+(S.rep.loc?S.rep.loc.addr:'—')+'</div>'
+  +'<div class="yc-row" style="margin-top:8px">'+(S.rep.photo?'<span class="yc-chip" style="color:#167D73;background:rgba(22,125,115,.13)">'+ic('cam',11)+' '+t('photo')+'</span>':'')+(S.rep.voice===2?'<span class="yc-chip" style="color:#167D73;background:rgba(22,125,115,.13)">'+ic('mic',11)+' '+t('voice')+'</span>':'')+'</div></div></div></div>'
+  +'<div class="yc-card"><div class="yc-muted" style="margin-bottom:4px">'+t('review')+'</div><div style="font-size:13px">'+t('confirmNote')+'</div></div>';
+ }
+ var nav='<div class="yc-row" style="padding:0 12px 12px">'
+ +(S.rep.step>1?'<button class="yc-btn ghost" style="flex:1" onclick="wPrev()">'+ic('back',16)+' '+t('prev')+'</button><span style="width:8px"></span>':'')
+ +(S.rep.step<3
+   ?'<button class="yc-btn" style="flex:1" '+(S.rep.step===2&&!S.rep.loc?'disabled':'')+' onclick="wNext()">'+t('next')+' '+ic('fwd',16)+'</button>'
+   :'<button class="yc-btn" style="flex:1" onclick="submitReport()">'+ic('send',16)+' '+t('send')+'</button>')
+ +'</div>';
+ return statusBar()
+ +'<div class="yc-hd"><div class="yc-title">'+t('report')+'</div><div class="yc-sunline"></div></div>'
+ +pips+body+nav
+ +'<div class="yc-toast" id="yc-toast"></div>';}
+
+function tlRow(r){
+ var orb,lab;
+ if(r.status==='resolved'){orb='<div class="yc-torb ok">'+ic('check',16)+'</div>';lab=t('statDone');}
+ else if(r.status==='progress'){orb='<div class="yc-torb warn">'+ic('sync',16)+'</div>';lab=t('statProg');}
+ else if(r.status==='verified'){orb='<div class="yc-torb ok">'+ic('user',16)+'</div>';lab=t('statVer');}
+ else{orb='<div class="yc-torb">'+ic('pin',16)+'</div>';lab=t('statNew');}
+ return '<div style="padding:0 12px"><div class="yc-tl">'+orb+'<div class="yc-grow"><div class="yc-row"><b class="yc-grow" style="font-size:14px">'+tt(r)+'</b>'+stChip(r.status)+'</div><div class="yc-stamp">'+lab+' · '+ago(r)+'</div></div></div></div>';}
+
+function vActivity(){
+ return statusBar()
+ +'<div class="yc-hd"><div class="yc-title">'+t('act')+'</div><div class="yc-muted">'+t('timeline')+'</div><div class="yc-sunline"></div></div>'
+ +S.reports.map(tlRow).join('')
+ +'<div style="height:4px"></div>'
+ +'<div class="yc-muted" style="padding:0 16px 8px">'+t('confirmNote')+'</div>'
+ +S.reports.map(function(r){return reportRow(r);}).join('')
+ +'<div class="yc-toast" id="yc-toast"></div>';}
+
+function vProfile(){
+ var confirms=Object.keys(S.confirmed).length,votes=Object.keys(S.voted).length;
+ function row(icon,label,right){return '<div class="yc-card" style="padding:10px 12px;margin-bottom:8px"><div class="yc-row"><span class="yc-iconbtn" style="border:0;background:rgba(29,43,42,.05)">'+icon+'</span><span class="yc-grow" style="font-size:14px">'+label+'</span>'+right+'</div></div>';}
+ return statusBar()
+ +'<div class="yc-hd"><div class="yc-title">'+t('prof')+'</div><div class="yc-sunline"></div>'+langPills()+'</div>'
+ +'<div class="yc-card"><div class="yc-row"><span class="yc-iconbtn" style="width:48px;height:48px;border-radius:12px;background:#1D2B2A;color:#F5F2EA;border:0">'+ic('user',24)+'</span><div class="yc-grow"><b style="font-size:15px">احمد رحیمی</b><div class="yc-stamp">'+ic('pin',12)+' '+t('nahia')+'</div></div></div>'
+ +'<div class="yc-row" style="margin-top:12px;text-align:center"><div class="yc-grow"><b style="font-size:18px">'+S.mine.length+'</b><div class="yc-muted">'+t('reports')+'</div></div><div class="yc-grow"><b style="font-size:18px">'+confirms+'</b><div class="yc-muted">'+t('confirmed')+'</div></div><div class="yc-grow"><b style="font-size:18px">'+votes+'</b><div class="yc-muted">'+t('votes')+'</div></div></div></div>'
+ +row(ic('bell',18),t('notif'),'<button class="yc-fchip '+(S.notif?'on':'')+'" onclick="S.notif=!S.notif;render()">'+(S.notif?t('done'):t('closeMap'))+'</button>')
+ +row(ic('off',18),t('offline'),'<button class="yc-fchip '+(S.offline?'on':'')+'" onclick="S.offline=!S.offline;render()">'+(S.offline?t('done'):t('closeMap'))+'</button>')
+ +row(ic('info',18),t('help'),'<button class="yc-iconbtn" onclick="S.help=true;render()">'+ic('back',16)+'</button>')
+ +row(ic('chart',18),t('muni'),'<button class="yc-iconbtn" onclick="S.muni=true;render()">'+ic('back',16)+'</button>')
+ +'<div class="yc-toast" id="yc-toast"></div>';}
+
+function vMuni(){
+ var total=S.reports.length;
+ var ver=S.reports.filter(function(r){return r.status==='verified'||r.status==='progress';}).length;
+ var res=S.reports.filter(function(r){return r.status==='resolved';}).length;
+ function act(r){
+  if(r.status==='resolved')return '<span class="yc-chip" style="color:#167D73;background:rgba(22,125,115,.13)">'+ic('check',12)+' '+t('resolved')+'</span>';
+  var lbl=r.status==='progress'?t('solve'):t('accept');
+  return '<button class="yc-confirm" onclick="muniAdvance('+r.id+')">'+ic(r.status==='progress'?'check':'sync',14)+' '+lbl+'</button>';}
+ return statusBar(t('queue2'))
+ +'<div class="yc-hd"><div class="yc-title"><button class="yc-navbtn" onclick="S.muni=false;render()">'+ic('back',18)+'</button>'+t('muniTitle')+'</div><div class="yc-sunline"></div></div>'
+ +'<div class="yc-metrics"><div class="yc-metric"><b>'+total+'</b><span class="yc-muted">'+t('mTotal')+'</span></div><div class="yc-metric"><b style="color:#167D73">'+ver+'</b><span class="yc-muted">'+t('mVer')+'</span></div><div class="yc-metric"><b style="color:#167D73">'+res+'</b><span class="yc-muted">'+t('mRes')+'</span></div></div>'
+ +'<div style="padding:0 16px 6px;font-size:13px;font-weight:600">'+t('queue2')+'</div>'
+ +S.reports.map(function(r){return '<div class="yc-card" style="margin-bottom:8px"><div class="yc-rep">'+catIcon(r.cat)+'<div class="yc-grow"><div class="yc-row"><b class="yc-grow" style="font-size:14px">'+tt(r)+'</b><span class="yc-chip" style="color:#B9811F;background:rgba(230,168,74,.16)">'+ic('user',11)+' '+r.conf+'</span></div><div class="yc-stamp">'+ic('pin',12)+' '+geo(r.x,r.y).split('·')[0]+' · '+stChip(r.status)+'</div><div class="yc-row" style="margin-top:8px"><span class="yc-grow"></span>'+act(r)+'</div></div></div></div>';}).join('')
+ +'<div class="yc-toast" id="yc-toast"></div>';}
+
+function helpOverlay(){
+ return '<div class="yc-sheet" style="border-color:rgba(230,168,74,.6);background:rgba(230,168,74,.07)"><div class="yc-row" style="margin-bottom:6px"><b class="yc-grow" style="font-size:14px">'+t('helpT')+'</b><button class="yc-iconbtn" style="width:28px;height:28px" onclick="S.help=false;render()">'+ic('close',14)+'</button></div><div style="font-size:13px;line-height:1.6">'+t('helpB')+'</div></div>';}
+
+/* ---------- actions ---------- */
+function setLang(l){S.lang=l;render();}
+function setTab(tab){S.tab=tab;S.sel=null;S.newPin=null;if(tab!=='report'&&!S.rep.done){S.rep={step:1,cat:null,loc:null,photo:false,voice:0,done:false};}render();}
+function confirmRep(id){if(S.confirmed[id])return;S.confirmed[id]=1;var r=S.reports.find(function(x){return x.id===id;});r.conf++;if(r.status==='new'&&r.conf>=3)r.status='verified';toast(t('confirmNote'));render();}
+function vote(id){var r=S.reports.find(function(x){return x.id===id;});if(S.voted[id]){delete S.voted[id];r.conf=Math.max(0,r.conf-1);}else{S.voted[id]=1;r.conf++;toast(t('votedone'));}render();}
+function pickCat(c){S.rep.cat=c;S.rep.step=2;render();}
+function gpsLoc(){S.rep.loc={x:170,y:252,addr:geo(170,252)};render();}
+function addPhoto(){S.rep.photo=true;render();}
+function addVoice(){if(S.rep.voice)return;S.rep.voice=1;render();setTimeout(function(){S.rep.voice=2;render();toast(t('voicedone'));},1100);}
+function wNext(){if(S.rep.step===2&&!S.rep.loc)return;S.rep.step=Math.min(3,S.rep.step+1);render();}
+function wPrev(){S.rep.step=Math.max(1,S.rep.step-1);render();}
+function submitReport(){
+ var c=S.rep.cat,id=1000+S.mine.length;
+ var dk=T.dari[CAT[c].dk],ps=T.pshto[CAT[c].dk];
+ var entry={id:id,cat:c,t_d:dk,t_p:ps,x:S.rep.loc.x,y:S.rep.loc.y,conf:0,status:'new',age:1,u:'min'};
+ S.reports.unshift(entry);
+ S.mine.unshift({id:id,cat:c,t_d:dk,t_p:ps,addr:S.rep.loc.addr,phase:'queue'});
+ S.rep.done=true;
+ setTimeout(function(){var m=S.mine.find(function(x){return x.id===id;});if(m){m.phase='synced';toast(t('synced'));if(S.tab==='report'||S.tab==='act')render();}},2400);
+ render();}
+function resetRep(){S.rep={step:1,cat:null,loc:null,photo:false,voice:0,done:false};render();}
+function muniAdvance(id){var r=S.reports.find(function(x){return x.id===id;});
+ if(r.status==='progress')r.status='resolved';else r.status='progress';render();}
+
+/* ---------- render ---------- */
+function tabbar(){
+ function tab(key,icon,label){return '<button class="yc-tab '+(S.tab===key&&!S.muni?'on':'')+'" onclick="setTab(\''+key+'\')"><span class="yc-tic">'+ic(icon,22)+'</span>'+label+'</button>';}
+ return tab('home','home',t('home'))+tab('map','pin',t('map'))
+ +'<button class="yc-fab" onclick="setTab(\'report\')">'+ic('plus',26)+'</button>'
+ +tab('act','hist',t('act'))+tab('prof','user',t('prof'));}
+function render(){
+ var scr=document.getElementById('yc-screen');
+ var h=S.muni?vMuni():({home:vHome,map:vMap,report:vReport,act:vActivity,prof:vProfile})[S.tab]();
+ if(S.help)h+=helpOverlay();
+ scr.innerHTML=h;scr.scrollTop=0;
+ document.getElementById('yc-tabbar').innerHTML=tabbar();}
+render();
+</script>
+</body>
+</html>
